@@ -80,6 +80,7 @@ export class QuillEditorComponent
   @Input() debug?: 'warn' | 'log' | 'error' | false
   @Input() readOnly?: boolean
   @Input() placeholder?: string
+  @Input() maxHtmlLength?:number
   @Input() maxLength?: number
   @Input() minLength?: number
   @Input() required: boolean = false
@@ -461,6 +462,14 @@ export class QuillEditorComponent
 
       valid = false
     }
+    var htmlLength = this.quillEditor.root.innerHTML.length;
+        if (this.maxHtmlLength && htmlLength > this.maxHtmlLength) {
+            err.maxLengthError = {
+                given: htmlLength,
+                maxLength: this.maxHtmlLength
+            };
+            valid = false;
+        }
 
     if (this.required && !textLength) {
       err.requiredError = {
